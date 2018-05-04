@@ -1,7 +1,10 @@
 from __future__ import unicode_literals
 
 from django.contrib.contenttypes.models import ContentType
-from django.core.urlresolvers import reverse
+try:
+    from django.core.urlresolvers import reverse
+except ModuleNotFoundError:
+    from django.urls import reverse
 from django.db.models import ManyToManyField
 from django.db.models.signals import (
     post_init, post_save, pre_delete, m2m_changed
