@@ -154,7 +154,10 @@ def _create_tracked_field(event, instance, field, fieldname=None):
     fieldname = fieldname or field
     if isinstance(instance._meta.get_field(field), ForeignKey):
         # We only have the pk, we need to get the actual object
-        model = instance._meta.get_field(field).rel.to
+        if hasattr(instance._meta.get_field(field), 'rel'):
+            model = instance._meta.get_field(field).rel.to
+        else:
+            model = instance._meta.get_field(field).remote_field.model
         pk = instance._original_fields[field]
         try:
             old_value = model.objects.get(pk=pk)
